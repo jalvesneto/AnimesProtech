@@ -10,5 +10,7 @@ namespace AnimesProtech.DAL.Models
         [Required]
         [MaxLength(40)]
         public string Name { get; set; }
+
+        public bool isDeleted { get; set; }
     }
 }

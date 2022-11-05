@@ -26,9 +26,26 @@ namespace AnimesProtech.Controllers
 
         [Route("GetDirectors")]
         [HttpGet]
-        public JsonResult GetDirectors()
+        public IActionResult GetDirectors(int page = 1)
         {
-            return new JsonResult("I am alive and working!");
+            var result = _directorManager.GetDirectors(page);
+            return Ok(result);
+        }
+
+        [Route("GetDirectorsById/{idDirector}")]
+        [HttpGet]
+        public IActionResult GetDirectorById(long idDirector)
+        {
+            var result = _directorManager.GetDirectorById(idDirector);
+            return Ok(result);
+        }
+
+        [Route("GetDirectorsByName")]
+        [HttpGet]
+        public IActionResult GetDirectorById(string nome, int page = 1)
+        {
+            var result = _directorManager.GetDirectorByName(nome, page);
+            return Ok(result);
         }
 
         [Route("AddDirector")]
@@ -36,21 +53,23 @@ namespace AnimesProtech.Controllers
         public IActionResult AddDirector(RegisterDirectorDTO request)
         {
             var response = _directorManager.Register(request);
-            return Ok(response);
+            return Created("Diretor cadastrado com sucesso!",response);
         }
 
         [Route("PutDirector")]
         [HttpPut]
         public IActionResult PutDirector(UpdateDirectorDTO request)
         {
-            return Ok(request);
+            var response = _directorManager.Update(request);
+            return Ok(response);
         }
 
         [Route("RemoveDirector/{idDirector}")]
         [HttpPatch]
-        public JsonResult RemoveDirector(long idDirector)
+        public IActionResult RemoveDirector(long idDirector)
         {
-            return new JsonResult(idDirector);
+            var result = _directorManager.Delete(idDirector);
+            return NoContent();
         }
     }
 }

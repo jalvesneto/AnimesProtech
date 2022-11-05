@@ -25,11 +25,44 @@ namespace AnimesProtech.Controllers
             return new JsonResult("I am alive and working!");
         }
 
-        [Route("GetAnime")]
+        [Route("GetAnimes")]
         [HttpGet]
-        public JsonResult GetAnime()
+        public IActionResult GetAnimes(int page = 1)
         {
-            return new JsonResult("I am alive and working!");
+            var result = _animeManager.GetAnimes(page);
+            return Ok(result);
+        }
+
+        [Route("GetAnimeById/{idAnime}")]
+        [HttpGet]
+        public IActionResult GetAnimeById(int idAnime)
+        {
+            var result = _animeManager.GetAnimeById(idAnime);
+            return Ok(result);
+        }
+
+        [Route("GetAnimeByDirector/{idDirector}")]
+        [HttpGet]
+        public IActionResult GetAnimeByDirector(int idDirector, int page = 1)
+        {
+            var result = _animeManager.GetAnimesByDirector(idDirector, page);
+            return Ok(result);
+        }
+
+        [Route("GetAnimeByName")]
+        [HttpGet]
+        public IActionResult GetAnimeByName(string name, int page = 1)
+        {
+            var result = _animeManager.GetAnimesByTitle(name, page);
+            return Ok(result);
+        }
+
+        [Route("GetAnimeByKeyWord")]
+        [HttpGet]
+        public IActionResult GetAnimeByKeyWord(string name, int page = 1)
+        {
+            var result = _animeManager.GetAnimesByKeyWord(name, page);
+            return Ok(result);
         }
 
         [Route("AddAnime")]
@@ -37,22 +70,23 @@ namespace AnimesProtech.Controllers
         public IActionResult AddAnime(RegisterAnimeDTO request)
         {
             var result = _animeManager.Register(request.Name, request.Description, request.IdDirector);
-            return Ok(result);
+            return Created("Anime cadastrado com sucesso!", result);
         }
 
         [Route("PutAnime")]
         [HttpPut]
         public IActionResult PutAnime(UpdateAnimeDTO request)
         {
-            var result = _animeManager.Update(request.AnimeId, request.Name, request.Description, request.DiretorId);
+            var result = _animeManager.Update(request);
             return Ok(result);
         }
 
         [Route("RemoveAnime/{idAnime}")]
         [HttpPatch]
-        public JsonResult RemoveAnime(long idAnime)
+        public IActionResult RemoveAnime(long idAnime)
         {
-            return new JsonResult(idAnime);
+            var result = _animeManager.Delete(idAnime);
+            return NoContent();
         }
     }
 }

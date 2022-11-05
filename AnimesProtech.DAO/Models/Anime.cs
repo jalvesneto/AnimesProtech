@@ -22,5 +22,7 @@ namespace AnimesProtech.DAL.Models
         public long DiretorId { get; set; }
         public Director Diretor { get; set; }
 
+        public bool isDeleted { get; set; }
+
     }
 }

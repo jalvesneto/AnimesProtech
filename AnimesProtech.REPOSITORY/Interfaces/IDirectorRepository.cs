@@ -10,6 +10,16 @@ namespace AnimesProtech.REPOSITORY.Interfaces
 {
     public interface IDirectorRepository
     {
-        public Director AddDirector(RegisterDirectorDTO anime);
+        Director GetDirectorById(long id);
+
+        List<Director> GetDirectors(int page);
+
+        List<Director> GetDirectorByName(string name, int page);
+
+        Director AddDirector(RegisterDirectorDTO anime);
+
+        Director EditDirector(Director director);
+
+        Director SetDeleted(Director director);
     }
 }
