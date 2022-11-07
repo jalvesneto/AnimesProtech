@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnimesProtech.DAL\AnimesProtech.DAL.csproj" />
     <ProjectReference Include="..\AnimesProtech.DTO\AnimesProtech.DTO.csproj" />
     <ProjectReference Include="..\AnimesProtech.MANAGER\AnimesProtech.MANAGER.csproj" />
   </ItemGroup>

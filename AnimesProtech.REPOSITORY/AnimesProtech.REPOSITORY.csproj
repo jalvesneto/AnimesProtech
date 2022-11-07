@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnimesProtech.DAL\AnimesProtech.DAL.csproj" />
     <ProjectReference Include="..\AnimesProtech.DAO\AnimesProtech.DAL.csproj" />
     <ProjectReference Include="..\AnimesProtech.DTO\AnimesProtech.DTO.csproj" />
   </ItemGroup>
