@@ -15,7 +15,7 @@ namespace AnimesProtech.MANAGER.Interfaces
 
         List<ResponseAnimeDTO> GetAnimesByKeyWord(string keyword, int page);
 
-        ResponseAnimeDTO Register(string name, string description, long idDirector);
+        ResponseAnimeDTO Register(RegisterAnimeDTO requestanime);
         UpdateAnimeDTO Update(UpdateAnimeDTO anime);
         string Delete(long id);
     }

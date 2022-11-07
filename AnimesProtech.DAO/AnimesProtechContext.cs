@@ -12,7 +12,7 @@ public partial class AnimesProtechContext : DbContext
 
         if (!optionsBuilder.IsConfigured)
         {
-            String ConnectionString = "Server=localhost\\SQLEXPRESS;Database=AnimesProtechDB;Trusted_Connection=True;";
+            String ConnectionString = Environment.GetEnvironmentVariable("ANIMES_PROTECH_CONNECTION_STRING");
             optionsBuilder.UseSqlServer(ConnectionString);
         }
     }

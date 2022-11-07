@@ -17,7 +17,7 @@ namespace AnimesProtech.DAL.DAO
                 var obj = _context.Set<T>().Find(id);
                 if (obj == null)
                 {
-                    throw new OperationCanceledException("Não foi possível encontrar uma tarefa com este Id");
+                    throw new OperationCanceledException("Não foi possível encontrar um objeto com este Id");
                 }
                 return obj;
             }

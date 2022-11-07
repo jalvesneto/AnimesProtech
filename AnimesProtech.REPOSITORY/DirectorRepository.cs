@@ -33,7 +33,7 @@ namespace AnimesProtech.REPOSITORY
         {
             try
             {
-                return _directorDAO.GetOne(id);
+                return _directorDAO.Get().Where(i => i.Id == id).Where(i => i.isDeleted == false).FirstOrDefault();
             }
             catch (Exception)
             {

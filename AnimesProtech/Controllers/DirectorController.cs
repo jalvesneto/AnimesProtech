@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using AnimesProtech.DTO.DirectorDTO;
+﻿using AnimesProtech.DTO.DirectorDTO;
 using AnimesProtech.MANAGER.Interfaces;
+using AnimesProtech.WEBAPI.Controllers.Base;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace AnimesProtech.Controllers
 {
     [ApiController]
     [Route("Director")]
-    public class DirectorController : ControllerBase
+    public class DirectorController : BaseController
     {
         private readonly ILogger<AnimeController> _logger;
         private readonly IDirectorManager _directorManager;
@@ -28,48 +30,102 @@ namespace AnimesProtech.Controllers
         [HttpGet]
         public IActionResult GetDirectors(int page = 1)
         {
-            var result = _directorManager.GetDirectors(page);
-            return Ok(result);
+            try
+            {
+                var result = _directorManager.GetDirectors(page);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
         }
 
         [Route("GetDirectorsById/{idDirector}")]
         [HttpGet]
         public IActionResult GetDirectorById(long idDirector)
         {
-            var result = _directorManager.GetDirectorById(idDirector);
-            return Ok(result);
+            try
+            {
+                var result = _directorManager.GetDirectorById(idDirector);
+                return Ok(result);
+            }
+            catch (OperationCanceledException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
         }
 
         [Route("GetDirectorsByName")]
         [HttpGet]
-        public IActionResult GetDirectorById(string nome, int page = 1)
+        public IActionResult GetDirectorByName(string nome, int page = 1)
         {
-            var result = _directorManager.GetDirectorByName(nome, page);
-            return Ok(result);
+            try
+            { 
+                var result = _directorManager.GetDirectorByName(nome, page);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
         }
 
         [Route("AddDirector")]
         [HttpPost]
         public IActionResult AddDirector(RegisterDirectorDTO request)
         {
-            var response = _directorManager.Register(request);
-            return Created("Diretor cadastrado com sucesso!",response);
+            try
+            {
+                var response = _directorManager.Register(request);
+                return Created("Diretor cadastrado com sucesso!",response);
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
         }
 
         [Route("PutDirector")]
         [HttpPut]
         public IActionResult PutDirector(UpdateDirectorDTO request)
         {
-            var response = _directorManager.Update(request);
-            return Ok(response);
+            try
+            {
+                var response = _directorManager.Update(request);
+                return Ok(response);
+            }
+            catch (OperationCanceledException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
         }
 
         [Route("RemoveDirector/{idDirector}")]
         [HttpPatch]
         public IActionResult RemoveDirector(long idDirector)
         {
-            var result = _directorManager.Delete(idDirector);
-            return NoContent();
+            try
+            {
+                var result = _directorManager.Delete(idDirector);
+                return NoContent();
+            }
+            catch (OperationCanceledException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Error(ex.Message);
+            }
         }
     }
 }

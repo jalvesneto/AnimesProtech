@@ -49,7 +49,7 @@ namespace AnimesProtech.REPOSITORY
         {
             try
             {
-                return _animeDAO.GetOne(id);
+                return _animeDAO.Get().Where(i => i.AnimeId == id).Where(i => i.isDeleted == false).FirstOrDefault();
             }
             catch (Exception)
             {

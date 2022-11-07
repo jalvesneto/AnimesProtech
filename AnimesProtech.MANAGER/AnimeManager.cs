@@ -4,6 +4,7 @@ using AnimesProtech.DTO.DirectorDTO;
 using AnimesProtech.MANAGER.Interfaces;
 using AnimesProtech.REPOSITORY;
 using AnimesProtech.REPOSITORY.Interfaces;
+using System.IO;
 
 namespace AnimesProtech.MANAGER
 {
@@ -26,13 +27,18 @@ namespace AnimesProtech.MANAGER
 
             foreach (var resultItem in result)
             {
+                string nameDirector = "";
                 var director = _directorRepository.GetDirectorById(resultItem.DiretorId);
+                if (director != null)
+                {
+                    nameDirector = director.Name;
+                }
 
                 ResponseAnimeDTO responseAnime = new ResponseAnimeDTO();
                 responseAnime.AnimeId = resultItem.AnimeId;
                 responseAnime.AnimeName = resultItem.Name;
                 responseAnime.Description = resultItem.Description;
-                responseAnime.DirectorName = director.Name;
+                responseAnime.DirectorName = nameDirector;
 
                 response.Add(responseAnime);
             }
@@ -44,34 +50,52 @@ namespace AnimesProtech.MANAGER
         {
             ResponseAnimeDTO response = new ResponseAnimeDTO();
 
-            var result = _animeRepository.GetAnimeById(id);
-
-            if (result == null) {
-                throw new OperationCanceledException("Não foi possível encontrar um Anime com o Id fornecido!");
-            }
-            else
+            try
             {
-                var director = _directorRepository.GetDirectorById(result.DiretorId);
+                var result = _animeRepository.GetAnimeById(id);
+                if (result == null) {
+                    throw new OperationCanceledException("Não foi possível encontrar um Anime com o Id fornecido!");
+                }
+                else
+                {
+                    string nameDirector = "";
+                    var director = _directorRepository.GetDirectorById(result.DiretorId);
+                    if (director != null)
+                    {
+                        nameDirector = director.Name;
+                    }
 
-                response.AnimeId = result.AnimeId;
-                response.AnimeName = result.Name;
-                response.Description = result.Description;
-                response.DirectorName = director.Name;
+                    response.AnimeId = result.AnimeId;
+                    response.AnimeName = result.Name;
+                    response.Description = result.Description;
+                    response.DirectorName = nameDirector;
 
-                return response;
+                    return response;
+                }
+
             }
+            catch
+            {
+                throw;
+            }
+
         }
 
         public List<ResponseAnimeDTO> GetAnimesByDirector(long idDirector, int page)
         {
             List<ResponseAnimeDTO> response = new List<ResponseAnimeDTO>();
 
+            var director = _directorRepository.GetDirectorById(idDirector);
+
+            if (director == null)
+            {
+                throw new OperationCanceledException("Não Existe diretor com esse id");
+            }
+
             var result = _animeRepository.GetAnimesByDirector(idDirector, page);
 
             foreach (var resultItem in result)
             {
-                var director = _directorRepository.GetDirectorById(resultItem.DiretorId);
-
                 ResponseAnimeDTO responseAnime = new ResponseAnimeDTO();
                 responseAnime.AnimeId = resultItem.AnimeId;
                 responseAnime.AnimeName = resultItem.Name;
@@ -92,13 +116,18 @@ namespace AnimesProtech.MANAGER
 
             foreach (var resultItem in result)
             {
+                string nameDirector = "";
                 var director = _directorRepository.GetDirectorById(resultItem.DiretorId);
+                if (director != null)
+                {
+                    nameDirector = director.Name;
+                }
 
                 ResponseAnimeDTO responseAnime = new ResponseAnimeDTO();
                 responseAnime.AnimeId = resultItem.AnimeId;
                 responseAnime.AnimeName = resultItem.Name;
                 responseAnime.Description = resultItem.Description;
-                responseAnime.DirectorName = director.Name;
+                responseAnime.DirectorName = nameDirector;
 
                 response.Add(responseAnime);
             }
@@ -114,13 +143,18 @@ namespace AnimesProtech.MANAGER
 
             foreach (var resultItem in result)
             {
+                string nameDirector = "";
                 var director = _directorRepository.GetDirectorById(resultItem.DiretorId);
+                if (director != null)
+                {
+                    nameDirector = director.Name;
+                }
 
                 ResponseAnimeDTO responseAnime = new ResponseAnimeDTO();
                 responseAnime.AnimeId = resultItem.AnimeId;
                 responseAnime.AnimeName = resultItem.Name;
                 responseAnime.Description = resultItem.Description;
-                responseAnime.DirectorName = director.Name;
+                responseAnime.DirectorName = nameDirector;
 
                 response.Add(responseAnime);
             }
@@ -128,57 +162,88 @@ namespace AnimesProtech.MANAGER
             return response;
         }
 
-        public ResponseAnimeDTO Register(string name, string description, long idDirector)
+        public ResponseAnimeDTO Register(RegisterAnimeDTO requestanime)
         {
-            RegisterAnimeDTO anime = new RegisterAnimeDTO();
-            anime.Name = name;
-            anime.Description = description;
-            anime.IdDirector = idDirector;
-            var responseAnime = _animeRepository.AddAnime(anime);
-
-            var newAnime = new ResponseAnimeDTO()
+            try
             {
-                AnimeId = responseAnime.AnimeId,
-                AnimeName = responseAnime.Name,
-                Description = responseAnime.Description,
-                DirectorName = "a",
-            };
+                var director = _directorRepository.GetDirectorById(requestanime.IdDirector);
+                if (director == null)
+                {
+                    throw new ArgumentException("Não existe um Diretor com esse id");
+                }
+                var responseAnime = _animeRepository.AddAnime(requestanime);
 
-            return newAnime;
+                var newAnime = new ResponseAnimeDTO()
+                {
+                    AnimeId = responseAnime.AnimeId,
+                    AnimeName = responseAnime.Name,
+                    Description = responseAnime.Description,
+                    DirectorName = director.Name,
+                };
+
+                return newAnime;
+            }
+            catch (OperationCanceledException ex)
+            {
+                throw new ArgumentException("Não existe um Diretor com esse id");
+            }
+            catch
+            {
+                throw;
+            }
+
         }
 
         public UpdateAnimeDTO Update(UpdateAnimeDTO anime)
         {
-            var editableAnime = _animeRepository.GetAnimeById(anime.AnimeId);
-
-            if (editableAnime == null)
+            try
             {
-                throw new OperationCanceledException("Não foi possível encontrar um anime com o Id passado.");
-            }
+                var editableAnime = _animeRepository.GetAnimeById(anime.AnimeId);
+                if (editableAnime == null)
+                {
+                    throw new ArgumentException("Não existe um Anime com esse id");
+                }
+                var diretor = _directorRepository.GetDirectorById(anime.DiretorId);
+                if (diretor == null)
+                {
+                    throw new ArgumentException("Não existe um Diretor com esse id");
+                }
 
-            editableAnime.Name = anime.Name;
-            editableAnime.Description = anime.Description;
-            editableAnime.DiretorId = anime.DiretorId;
+                editableAnime.Name = anime.Name;
+                editableAnime.Description = anime.Description;
+                editableAnime.DiretorId = anime.DiretorId;
             
-            _animeRepository.EditAnime(editableAnime);
+                _animeRepository.EditAnime(editableAnime);
 
-            return anime;
+                return anime;
+            }
+            catch (OperationCanceledException ex)
+            {
+                throw new ArgumentException("Não foi possível encontrar um Anime ou Diretor com os id's passados.");
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public string Delete(long id)
         {
-            var editableAnime = _animeRepository.GetAnimeById(id);
-
-            if (editableAnime == null)
+            try
             {
-                throw new OperationCanceledException("Não foi possível encontrar um anime com o Id passado.");
-            }
-            else
-            {
+                var editableAnime = _animeRepository.GetAnimeById(id);
+                if (editableAnime == null)
+                {
+                    throw new OperationCanceledException("Não foi possível encontrar um Anime com o Id passado.");
+                }
                 var result = _animeRepository.SetDeleted(editableAnime);
-
                 return ($"Anime de id = {id} excluído com sucesso.");
             }
+            catch
+            {
+                throw;
+            }
         }
+
     }
 }
