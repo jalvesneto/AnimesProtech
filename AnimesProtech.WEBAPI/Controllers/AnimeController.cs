@@ -21,6 +21,11 @@ namespace AnimesProtech.WEBAPI.Controllers
             _animeManager = animeManager;
         }
 
+
+        /// <summary>
+        /// Método para verificar a atividade da API.
+        /// </summary>
+        /// <returns></returns>
         [Route("HealtCheck")]
         [HttpGet]
         public JsonResult HealthCheck()
@@ -28,6 +33,13 @@ namespace AnimesProtech.WEBAPI.Controllers
             return new JsonResult("I am alive and working!");
         }
 
+        /// <summary>
+        /// Retorna animes sem nenhuma restrição, pela ordem de cadastro.
+        /// Possui paginação, retornando apenas 10 por vez. Parâmetro page é 
+        /// opcional e por padrão, retorna a primeira página.
+        /// </summary> 
+        /// <param name="page"></param>
+        /// <returns></returns>
         [Route("GetAnimes")]
         [HttpGet]
         public IActionResult GetAnimes(int page = 1)
@@ -36,9 +48,15 @@ namespace AnimesProtech.WEBAPI.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Retorna as informações de um Anime em específico, de acordo com seu id.
+        /// Parâmetro idAnime é obrigatório e do tipo long.
+        /// </summary>
+        /// <param name="idAnime"></param>
+        /// <returns></returns>
         [Route("GetAnimeById/{idAnime}")]
         [HttpGet]
-        public IActionResult GetAnimeById(int idAnime)
+        public IActionResult GetAnimeById(long idAnime)
         {
             try
             {
@@ -55,6 +73,15 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna lista de animes de acordo com seu diretor.
+        /// Possui paginação, retornando apenas 10 por vez. Parâmetro page é 
+        /// opcional e por padrão, retorna a primeira página. 
+        /// o parâmetro idDirector é obrigatório e representa o id do Diretor.
+        /// </summary>
+        /// <param name="idDirector"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [Route("GetAnimeByDirector/{idDirector}")]
         [HttpGet]
         public IActionResult GetAnimeByDirector(int idDirector, int page = 1)
@@ -74,6 +101,16 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Retorna lista de animes de acordo com seu título.
+        /// Possui paginação, retornando apenas 10 por vez. Parâmetro page é 
+        /// opcional e por padrão, retorna a primeira página. 
+        /// O parâmetro name, do tipo string representa um termo para buscar entre os títulos dos animes.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [Route("GetAnimeByName")]
         [HttpGet]
         public IActionResult GetAnimeByName(string name, int page = 1)
@@ -93,6 +130,16 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna lista de animes de acordo com keywords em seu resumo.
+        /// Possui paginação, retornando apenas 10 por vez. Parâmetro page é 
+        /// opcional e por padrão, retorna a primeira página. 
+        /// o parâmetro name, do tipo string representa um termo para buscar 
+        /// nos resumos dos animes.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [Route("GetAnimeByKeyWord")]
         [HttpGet]
         public IActionResult GetAnimeByKeyWord(string name, int page = 1)
@@ -112,6 +159,12 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para adicionar um anime.
+        /// Parâmetro obrigatório do tipo RegisterAnimeDTO
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Route("AddAnime")]
         [HttpPost]
         public IActionResult AddAnime(RegisterAnimeDTO request)
@@ -132,6 +185,12 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para editar as informações um anime.
+        /// Parâmetro obrigatório do tipo UpdateAnimeDTO
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Route("PutAnime")]
         [HttpPut]
         public IActionResult PutAnime(UpdateAnimeDTO request)
@@ -152,7 +211,12 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Método para realizar a exclusão lógica de animes. 
+        /// Parâmetro obrigatório idAnime do tipo long.
+        /// </summary>
+        /// <param name="idAnime"></param>
+        /// <returns></returns>
         [Route("RemoveAnime/{idAnime}")]
         [HttpPatch]
         public IActionResult RemoveAnime(long idAnime)

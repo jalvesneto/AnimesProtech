@@ -20,6 +20,10 @@ namespace AnimesProtech.WEBAPI.Controllers
             _directorManager = directorManager;
         }
 
+        /// <summary>
+        /// Método para verificar a atividade da API.
+        /// </summary>
+        /// <returns></returns>
         [Route("HealtCheck")]
         [HttpGet]
         public JsonResult HealthCheck()
@@ -27,6 +31,13 @@ namespace AnimesProtech.WEBAPI.Controllers
             return new JsonResult("I am alive and working!");
         }
 
+        /// <summary>
+        /// Retorna diretores sem nenhuma restrição, pela ordem de cadastro.
+        /// Possui paginação, retornando apenas 10 por vez. Parâmetro page é 
+        /// opcional e por padrão, retorna a primeira página.
+        /// </summary> 
+        /// <param name="page"></param>
+        /// <returns></returns>
         [Route("GetDirectors")]
         [HttpGet]
         public IActionResult GetDirectors(int page = 1)
@@ -42,6 +53,12 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna as informações de um Diretor em específico, de acordo com seu id.
+        /// Parâmetro idDirector é obrigatório e do tipo long.
+        /// </summary>
+        /// <param name="idDirector"></param>
+        /// <returns></returns>
         [Route("GetDirectorsById/{idDirector}")]
         [HttpGet]
         public IActionResult GetDirectorById(long idDirector)
@@ -61,6 +78,15 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna lista de diretores de acordo com seu nome.
+        /// Possui paginação, retornando apenas 10 por vez. Parâmetro page é 
+        /// opcional e por padrão, retorna a primeira página. 
+        /// O parâmetro nome, do tipo string representa um termo para buscar entre os nomes dos diretores.
+        /// </summary>
+        /// <param name="nome"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [Route("GetDirectorsByName")]
         [HttpGet]
         public IActionResult GetDirectorByName(string nome, int page = 1)
@@ -76,6 +102,12 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para adicionar um diretor.
+        /// Parâmetro obrigatório do tipo RegisterDirectorDTO
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Route("AddDirector")]
         [HttpPost]
         public IActionResult AddDirector(RegisterDirectorDTO request)
@@ -92,6 +124,12 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para editar as informações de um diretor.
+        /// Parâmetro obrigatório do tipo UpdateDirectorDTO
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Route("PutDirector")]
         [HttpPut]
         public IActionResult PutDirector(UpdateDirectorDTO request)
@@ -111,6 +149,12 @@ namespace AnimesProtech.WEBAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Método para realizar a exclusão lógica de diretores. 
+        /// Parâmetro obrigatório idDirector do tipo long.
+        /// </summary>
+        /// <param name="idDirector"></param>
+        /// <returns></returns>
         [Route("RemoveDirector/{idDirector}")]
         [HttpPatch]
         public IActionResult RemoveDirector(long idDirector)
