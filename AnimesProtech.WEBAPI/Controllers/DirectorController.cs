@@ -3,17 +3,18 @@ using AnimesProtech.MANAGER.Interfaces;
 using AnimesProtech.WEBAPI.Controllers.Base;
 
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
-namespace AnimesProtech.Controllers
+namespace AnimesProtech.WEBAPI.Controllers
 {
     [ApiController]
     [Route("Director")]
     public class DirectorController : BaseController
     {
-        private readonly ILogger<AnimeController> _logger;
+        private readonly ILogger<DirectorController> _logger;
         private readonly IDirectorManager _directorManager;
 
-        public DirectorController(ILogger<AnimeController> logger, IDirectorManager directorManager)
+        public DirectorController(ILogger<DirectorController> logger, IDirectorManager directorManager)
         {
             _logger = logger;
             _directorManager = directorManager;
@@ -81,6 +82,7 @@ namespace AnimesProtech.Controllers
         {
             try
             {
+                Validator.ValidateObject(request, new ValidationContext(request), true);
                 var response = _directorManager.Register(request);
                 return Created("Diretor cadastrado com sucesso!",response);
             }

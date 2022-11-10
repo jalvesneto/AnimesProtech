@@ -3,8 +3,9 @@ using AnimesProtech.MANAGER.Interfaces;
 using AnimesProtech.WEBAPI.Controllers.Base;
 
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
-namespace AnimesProtech.Controllers
+namespace AnimesProtech.WEBAPI.Controllers
 {
     [ApiController]
     [Route("Animes")]
@@ -117,6 +118,7 @@ namespace AnimesProtech.Controllers
         {
             try
             {
+                Validator.ValidateObject(request, new ValidationContext(request), true);
                 var result = _animeManager.Register(request);
                 return Created("Anime cadastrado com sucesso!", result);
             }
@@ -136,6 +138,7 @@ namespace AnimesProtech.Controllers
         {
             try
             {
+                Validator.ValidateObject(request, new ValidationContext(request), true);
                 var result = _animeManager.Update(request);
                 return Ok(result);
             }
