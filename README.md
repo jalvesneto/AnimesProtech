@@ -38,4 +38,6 @@ No gerenciador de soluções do Visual Studio, defina o projeto "AnimesProtech.W
 
 A aplicação irá começar a rodar e uma aba com o _Swagger_ se abrirá no seu navegador padrão. Como esta API não tem autenticação, você consiguirá executar os endpoints sem muitos problemas no _Swagger_.
 
+Imagem do _Swagger_ rodando em minha máquina.
+![image](https://user-images.githubusercontent.com/76215426/201207723-dc944934-dd13-4c37-a94e-ad3bf1495715.png)
 
